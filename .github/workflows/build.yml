@@ -1,0 +1,56 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Insert provider server
+        env:
+          PROVIDER_SERVER: ${{ secrets.PROVIDER_SERVER }}
+        run: |
+          if [ -z "$PROVIDER_SERVER" ]; then echo "Missing PROVIDER_SERVER secret"; exit 1; fi
+          sed -i "s#__PROVIDER_SERVER__#${PROVIDER_SERVER%/}#" app/src/main/assets/index.html
+          if grep -q "__PROVIDER_SERVER__" app/src/main/assets/index.html; then echo "Server not inserted"; exit 1; fi
+      - name: Read version
+        id: v
+        run: echo "version=$(tr -d '[:space:]' < version.txt)" >> "$GITHUB_OUTPUT"
+      - name: Write signing key
+        env:
+          SIGNING_KEYSTORE_B64: ${{ secrets.SIGNING_KEYSTORE_B64 }}
+        run: |
+          if [ -z "$SIGNING_KEYSTORE_B64" ]; then echo "Missing SIGNING_KEYSTORE_B64 secret"; exit 1; fi
+          echo "$SIGNING_KEYSTORE_B64" | base64 -d > app/release.keystore
+      - name: Build
+        env:
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: gradle assembleRelease --no-daemon
+      - name: Rename APK
+        run: cp app/build/outputs/apk/release/app-release.apk RebornSport.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RebornSport
+          path: RebornSport.apk
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Reborn Sport ${{ steps.v.outputs.version }}
+          body: "Reborn Sport ${{ steps.v.outputs.version }} (build ${{ github.run_number }})"
+          files: RebornSport.apk

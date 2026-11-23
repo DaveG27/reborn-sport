@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Android TV home-screen row. -->
+    <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
+
+    <!-- Runs on phones and on TV boxes (Fire TV / Android TV). -->
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature android:name="android.software.leanback" android:required="false" />
+
+    <!-- Lets the app see which video players are installed (Android 11+). -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="video/*" android:scheme="http" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="video/*" android:scheme="https" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:largeHeap="true"
+        android:banner="@drawable/tv_banner_png"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.RebornSport.Main"
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|keyboard|navigation"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+            <!-- Opened from the TV home-screen row. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="rebornsport" android:host="open" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".PlayerActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|keyboard|navigation|smallestScreenSize"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="true"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/Theme.RebornSport.Player" />
+
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="com.rebornsport.app.CastOptionsProvider" />
+
+        <receiver android:name=".ReminderReceiver" android:exported="false" />
+
+        <receiver android:name=".BootReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".WidgetProvider" android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info" />
+        </receiver>
+    </application>
+</manifest>

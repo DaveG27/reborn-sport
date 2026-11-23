@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Reborn Sport</title>
+<style>
+:root{color-scheme:light dark;--bg:#ffffff;--ink:#0a1426;--mut:#5b6b85;--line:#e1e7f0;--pitch:#1f7fc4;--pitchbg:#e6f2fb;--live:#e1261c;--chip:#f0f4f9}
+@media(prefers-color-scheme:dark){:root{--bg:#050a11;--ink:#ffffff;--mut:#9fb0c8;--line:#1a2c4e;--pitch:#55b2f2;--pitchbg:#0f2238;--chip:#0f1d36}}
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Roboto,sans-serif;overflow-x:hidden}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:700;font-size:15px;color:var(--pitch);margin:0;display:flex;align-items:center;gap:10px}
+.brand img{width:36px;height:36px;border-radius:9px}
+body.tv .brand img{width:44px;height:44px}
+.icons{display:flex;gap:6px}
+.ib{border:0;background:var(--chip);color:var(--ink);width:44px;height:44px;border-radius:12px;font-size:20px;cursor:pointer}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 20px;margin-top:6px}
+h1{font:700 40px/1.02 "Roboto Condensed","Arial Narrow",sans-serif;margin:0;letter-spacing:-.01em}
+.date{color:var(--mut);margin:4px 0 0;font-size:15px}
+.seg{display:flex;background:var(--chip);border-radius:12px;padding:4px}
+.seg button{border:0;background:none;color:var(--ink);font:600 15px inherit;font-family:inherit;padding:0 14px;min-height:40px;border-radius:9px}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:16px 2px 6px;margin:0 -2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:600 15px inherit;font-family:inherit;padding:0 14px;min-height:44px;border-radius:999px;white-space:nowrap}
+.chip b{font-weight:600;font-size:13px;color:var(--mut);background:var(--chip);border-radius:999px;padding:1px 8px}
+.chip[aria-pressed=true]{background:var(--pitch);border-color:var(--pitch);color:#fff}
+.chip[aria-pressed=true] b{background:rgba(255,255,255,.2);color:#fff}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0 4px}
+input{font:16px inherit;font-family:inherit;color:var(--ink);background:var(--chip);border:1.5px solid transparent;border-radius:12px;padding:0 14px;min-height:48px;width:100%}
+input:focus{outline:none;border-color:var(--pitch)}
+.search{flex:1 1 220px;width:auto}
+.tog{display:flex;align-items:center;gap:8px;font-weight:500;font-size:15px;min-height:44px}
+.tog input{width:20px;height:20px;min-height:0;accent-color:var(--live)}
+.btn{border:0;background:var(--ink);color:var(--bg);font:600 15px inherit;font-family:inherit;padding:0 16px;min-height:44px;border-radius:12px}
+.btn.big{width:100%;min-height:52px;font-size:16px;background:var(--pitch);color:#fff}
+.sum{color:var(--mut);font-size:14px;margin:14px 0 6px}
+ol{list-style:none;margin:0;padding:0}
+.ev{display:grid;grid-template-columns:66px minmax(0,1fr);gap:4px 12px;padding:14px 0;border-top:1px solid var(--line)}
+.ev:last-child{border-bottom:1px solid var(--line)}
+.t{font:700 28px/1 "Roboto Condensed","Arial Narrow",sans-serif;white-space:nowrap;font-variant-numeric:tabular-nums}
+.t small{display:block;font:500 13px system-ui,sans-serif;color:var(--mut);margin-top:6px}
+.ti{font-weight:600;font-size:17px;line-height:1.3}
+.co{color:var(--mut);font-size:14px;margin-top:2px}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.ch{background:var(--pitchbg);color:var(--pitch);font-weight:600;font-size:14px;padding:4px 10px;border-radius:8px;white-space:nowrap}
+.sp{font-size:13px;color:var(--mut);border:1px solid var(--line);padding:3px 9px;border-radius:8px;white-space:nowrap}
+.live{display:inline-flex;align-items:center;gap:6px;background:var(--live);color:#fff;font-weight:700;font-size:13px;padding:4px 9px;border-radius:8px}
+.live i{width:7px;height:7px;border-radius:50%;background:#fff;animation:p 1.4s infinite}
+.billed{font-size:13px;font-weight:600;color:var(--live);border:1px solid var(--live);padding:3px 8px;border-radius:8px}
+@keyframes p{50%{opacity:.25}}
+.done{opacity:.5}
+.empty{padding:40px 0;text-align:center;color:var(--mut)}
+.empty strong{display:block;color:var(--ink);font-size:18px;margin-bottom:4px}
+.note{font-size:13px;color:var(--mut);margin-top:22px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:500;opacity:0;transition:.25s;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.login{max-width:420px;margin:0 auto;padding:48px 20px}
+.login h1{margin:6px 0 8px}
+.login p{color:var(--mut);margin:0 0 24px}
+.field{margin-bottom:14px}
+.field label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.server{font-weight:600;color:var(--pitch)}
+.err{color:var(--live);font-weight:500;min-height:24px;margin:4px 0 12px}
+.bar{height:4px;background:var(--chip);border-radius:4px;overflow:hidden;margin:10px 0 0}
+.bar i{display:block;height:100%;background:var(--pitch);width:0;transition:width .3s}
+[hidden]{display:none!important}
+button:focus-visible,.chip:focus-visible,input:focus-visible,.bell:focus-visible{outline:3px solid var(--pitch);outline-offset:2px}
+.ev{position:relative}
+.bell{position:absolute;right:0;top:12px;border:0;background:none;color:var(--mut);font-size:20px;width:44px;height:44px;border-radius:12px}
+.bell.on{color:var(--live)}
+.ev .ti{padding-right:44px}
+.fav{color:#e0a100}
+.days{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:12px}
+.days::-webkit-scrollbar{display:none}
+.days button{flex:none;border:0;background:var(--chip);color:var(--ink);font:600 14px inherit;font-family:inherit;padding:0 14px;min-height:40px;border-radius:10px}
+.days button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+button.ch{border:0;font-family:inherit}
+.catch{border:1.5px solid var(--pitch);background:none;color:var(--pitch);font-weight:700;font-size:13px;padding:3px 9px;border-radius:8px;min-height:30px}
+.update{display:flex;align-items:center;gap:10px;background:var(--pitchbg);color:var(--ink);border-radius:12px;padding:10px 12px;margin:10px 0 0;font-size:14px}
+.update b{flex:1}
+.update button{border:0;border-radius:10px;font-weight:600;font-family:inherit;min-height:38px;padding:0 12px}
+.update .go{background:var(--pitch);color:#fff}
+.update .x{background:none;color:var(--mut);font-size:18px}
+select{font:16px inherit;font-family:inherit;color:var(--ink);background:var(--chip);border:1.5px solid transparent;border-radius:12px;padding:0 12px;min-height:48px;width:100%}
+.watch{border:0;background:var(--pitch);color:#fff;font-weight:700;font-size:13px;padding:4px 10px;border-radius:8px;min-height:30px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:600 16px inherit;font-family:inherit;padding:12px 14px;border-radius:12px;margin-bottom:8px;min-height:52px}
+.opt[aria-pressed=true]{border-color:var(--pitch);background:var(--pitchbg)}
+.opt small{display:block;font-weight:400;color:var(--mut);font-size:13px}
+.stats{font-size:13px;color:var(--mut);background:var(--chip);border-radius:12px;padding:10px 12px;margin:8px 0 18px}
+.btn.ghost{background:var(--chip);color:var(--live);width:100%;min-height:48px}
+.ptr{height:0;overflow:hidden;text-align:center;color:var(--mut);font-size:14px;transition:height .15s}
+.ptr.show{height:36px;line-height:36px}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:5}
+.sheet .box{background:var(--bg);width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:20px 16px 28px;max-height:85vh;overflow:auto}
+.sheet h2{margin:0 0 6px;font-size:22px}
+.sheet p{color:var(--mut);margin:0 0 14px;font-size:14px}
+.row{display:flex;gap:8px;margin-bottom:12px}
+.row input{flex:1}
+.teams{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 16px}
+.team{display:flex;align-items:center;gap:6px;background:var(--chip);border-radius:999px;padding:6px 6px 6px 12px;font-weight:600}
+.team button{border:0;background:none;color:var(--mut);font-size:18px;width:32px;height:32px}
+body.tv{--bg:#050a11;--ink:#ffffff;--mut:#9fb0c8;--line:#1a2c4e;--pitch:#55b2f2;--pitchbg:#0f2238;--chip:#0f1d36;color-scheme:dark}
+#list .ev{content-visibility:auto;contain-intrinsic-size:auto 110px}
+body.tv *{animation:none!important;transition:none!important}
+body.tv .sheet{background:rgba(0,0,0,.7)}
+body.tv .wrap{max-width:1100px;padding:28px 40px}
+body.tv h1{font-size:52px}
+body.tv .ti{font-size:22px}
+body.tv .t{font-size:36px}
+body.tv .ev{grid-template-columns:96px minmax(0,1fr);border-radius:14px;padding:16px 14px;border:3px solid transparent;margin:2px 0}
+body.tv .ev:focus{outline:none;border-color:var(--pitch);background:var(--pitchbg)}
+body.tv .ev,body.tv #showAll{scroll-margin:140px 0}
+body.tv .chip,body.tv #days button{scroll-margin:0 80px}
+body.tv :focus{outline:4px solid var(--pitch)!important;outline-offset:3px}
+body.tv .ev:focus{outline:none!important}
+body.tv .bell,body.tv .watch,body.tv .catch{pointer-events:none}
+body.tv .hint{display:block}
+.hint{display:none;color:var(--mut);font-size:15px;margin:10px 0 0}
+</style>
+</head>
+<body>
+
+<!-- Sign-in screen -->
+<div class="login" id="loginView" hidden>
+  <p class="brand"><img src="logo.png" alt="">Reborn Sport</p>
+  <h1>Sign in</h1>
+  <p>Sign in with your username and password. They're saved on this device only.</p>
+  <form id="loginForm" autocomplete="on">
+    <div class="field"><label for="u">Username</label><input id="u" autocapitalize="none" autocomplete="username" spellcheck="false" required></div>
+    <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required></div>
+    <div class="err" id="loginErr" role="alert"></div>
+    <button class="btn big" id="loginBtn" type="submit">Sign in</button>
+  </form>
+</div>
+
+<!-- Listings -->
+<div class="wrap" id="mainView" hidden>
+  <div class="ptr" id="ptr">Release to refresh</div>
+  <div class="top">
+    <p class="brand"><img src="logo.png" alt="">Reborn Sport</p>
+    <div class="icons">
+      <button class="ib fav" id="favBtn" aria-label="Favourites">&#x2605;</button>
+      <button class="ib" id="refresh" aria-label="Refresh listings">&#x21bb;</button>
+      <button class="ib" id="settingsBtn" aria-label="Settings">&#x2699;</button>
+    </div>
+  </div>
+  <header>
+    <div>
+      <h1 id="h">Today's sport</h1>
+      <p class="date" id="date"></p>
+    </div>
+  </header>
+  <div class="update" id="updateBar" hidden><b id="updateText"></b><button class="go" id="updateGo">Download</button><button class="x" id="updateX" aria-label="Dismiss">×</button></div>
+  <nav class="days" id="days" aria-label="Day"></nav>
+  <div class="bar" id="bar" hidden><i id="barFill"></i></div>
+
+  <nav class="chips" id="chips" aria-label="Sports"></nav>
+
+  <div class="tools">
+    <input class="search" id="q" type="search" placeholder="Search team, event or channel" aria-label="Search listings">
+    <label class="tog"><input type="checkbox" id="liveOnly" checked> Live games only</label>
+    <label class="tog"><input type="checkbox" id="intl"> International</label>
+    <button class="btn" id="copy">Copy list</button>
+  </div>
+
+  <p class="hint">Use the arrows to move around. Press OK on a game for options.</p>
+  <p class="sum" id="sum"></p>
+  <ol id="list"></ol>
+  <p class="note" id="note"></p>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<!-- Settings -->
+<div class="sheet" id="setSheet" hidden>
+  <div class="box" role="dialog" aria-labelledby="setTitle">
+    <h2 id="setTitle">Settings</h2>
+    <p>Open games in:</p>
+    <div id="playerList"></div>
+    <p style="margin-top:14px">Open the app on:</p>
+    <select id="startSel" aria-label="Start screen"></select>
+    <p style="margin-top:14px">Hidden channels <span style="font-size:13px">(tap a channel name on any game to hide it)</span></p>
+    <div class="teams" id="hiddenList"></div>
+    <p style="margin-top:4px">About the last load</p>
+    <div class="stats" id="statsBox"></div>
+    <p style="margin-top:4px" id="verLine"></p>
+    <button class="btn ghost" id="checkUpd" style="color:var(--ink);margin-bottom:6px">Check for updates</button>
+    <div class="stats" id="updStatus" hidden></div>
+    <button class="btn big" id="updDownload" hidden style="margin-bottom:10px">Download the new version</button>
+    <button class="btn ghost" id="signout">Sign out</button>
+    <button class="btn big" id="setClose" style="margin-top:10px">Done</button>
+  </div>
+</div>
+
+<!-- Channel picker for Watch -->
+<div class="sheet" id="chSheet" hidden>
+  <div class="box" role="dialog" aria-labelledby="chTitle">
+    <h2 id="chTitle">Watch on</h2>
+    <p id="chGame"></p>
+    <div id="chList"></div>
+    <button class="btn big" id="chClose" style="margin-top:6px">Cancel</button>
+  </div>
+</div>
+
+<!-- Game options (TV remote) -->
+<div class="sheet" id="actSheet" hidden>
+  <div class="box" role="dialog" aria-labelledby="actTitle">
+    <h2 id="actTitle"></h2>
+    <p id="actSub"></p>
+    <div id="actList"></div>
+    <button class="btn big" id="actClose" style="margin-top:6px">Close</button>
+  </div>
+</div>
+
+<!-- Channel options -->
+<div class="sheet" id="hideSheet" hidden>
+  <div class="box" role="dialog" aria-labelledby="hideTitle">
+    <h2 id="hideTitle"></h2>
+    <p>Hide this channel? Games only on it will disappear. You can bring it back in Settings.</p>
+    <button class="btn big" id="hideYes">Hide channel</button>
+    <button class="btn ghost" id="hideNo" style="margin-top:10px;color:var(--ink)">Cancel</button>
+  </div>
+</div>
+
+<!-- Favourites -->
+<div class="sheet" id="favSheet" hidden>
+  <div class="box" role="dialog" aria-labelledby="favTitle">
+    <h2 id="favTitle">Favourites</h2>
+    <p>Add teams, players or competitions. Games that mention them get their own ★ filter.</p>
+    <form class="row" id="favForm"><input id="favInput" placeholder="e.g. Liverpool, Littler, NFL" autocomplete="off"><button class="btn" type="submit">Add</button></form>
+    <div class="teams" id="favList"></div>
+    <label class="tog"><input type="checkbox" id="favRemind"> Remind me 15 minutes before favourite live games</label>
+    <p style="margin-top:14px">Tap 🔕 on any game for a one-off reminder.</p>
+    <button class="btn big" id="favClose">Done</button>
+  </div>
+</div>
+
+<script>
+{
+// ---------- Settings ----------
+const SERVER = '__PROVIDER_SERVER__';   // filled in at build time from the PROVIDER_SERVER secret
+const USER_AGENT = 'RebornSport/1.0 (Android)';
+const TZ = 'Europe/London';
+const REFRESH_MS = 15 * 60 * 1000;
+const IS_TV_BOX = !!(window.Native && Native.isTv && Native.isTv());
+const MAX_CHANNELS = IS_TV_BOX ? 300 : 450;
+const DAYS = 7;          // days shown in the day picker
+const GROUPS_KEY = 'groups3';
+const UPDATE_API = 'https://api.github.com/repos/DaveG27/reborn-sport/releases/latest';
+
+// ---------- Native bridge (falls back to fetch when opened in a browser for testing) ----------
+const pending = {};
+let seq = 0;
+window.__native = (id, status, body) => { const p = pending[id]; if (p) { delete pending[id]; p({ status, body }); } };
+function httpGet(url, fields) {
+  if (window.Native && fields && Native.fetchSlim) return new Promise(res => { const id = 'r' + (++seq); pending[id] = res; Native.fetchSlim(id, url, USER_AGENT, fields); });
+  if (window.Native) return new Promise(res => { const id = 'r' + (++seq); pending[id] = res; Native.fetch(id, url, USER_AGENT); });
+  return fetch(url).then(async r => ({ status: r.status, body: await r.text() })).catch(() => ({ status: 0, body: '' }));
+}
+// Only these fields are passed back from the Android side, to keep memory low on TV boxes.
+const F_CATS = 'category_id,category_name';
+const F_STREAMS = 'stream_id,name,category_id,epg_channel_id,tv_archive,tv_archive_duration';
+const F_EPG = 'title,start,end,start_timestamp,stop_timestamp';
+async function getJson(url, fields) {
+  const r = await httpGet(url, fields);
+  if (r.status !== 200) { const e = new Error('HTTP ' + r.status); e.status = r.status; throw e; }
+  try { return JSON.parse(r.body); } catch { const e = new Error('Not JSON'); e.status = r.status; throw e; }
+}
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+function getLogin() { try { return JSON.parse(window.Native ? Native.getLogin() : (localStorage.getItem('login') || '')); } catch { return null; } }
+function setLogin(v) { const s = v ? JSON.stringify(v) : ''; if (window.Native) Native.setLogin(s); else localStorage.setItem('login', s); }
+
+// ---------- Sport detection (same rules as the website) ----------
+const TITLE_RULES = [
+  ['', /global champions|show ?jumping|equestrian|\bdressage\b/i],
+  ['nfl', /\bnfl\b|american football|super bowl/i],
+  ['darts', /darts|\bpdc\b/i],
+  ['snooker', /snooker/i],
+  ['football', /\bfootball\b|soccer|\bwsl\b|women'?s super league/i],
+  ['rugby', /rugby|six nations|super league|\burc\b|top 14|nations championship|champions cup/i],
+  ['cricket', /cricket|test match|t20|\bodi\b|\bipl\b|big bash|\bw?bbl\b|the ashes|the hundred|blackcaps|\d(st|nd|rd|th) test\b|\btest,? day\b/i],
+  ['tennis', /tennis|\batp\b|\bwta\b|davis cup|billie jean king|wimbledon|roland garros/i],
+  ['golf', /golf|\bpga\b|dp world tour|\blpga\b|ryder cup|the masters|\bliv\b/i],
+  ['motorsport', /formula 1|formula one|\bf1\b|\bf2\b|motogp|grand prix|nascar|indycar|\bwrc\b|\bbtcc\b|superbikes|formula e|speedway/i],
+  ['fighting', /boxing|\bufc\b|\bmma\b|bellator|fight night|wrestling|\bwwe\b|\baew\b/i],
+  ['racing', /horse racing|live racing|racing from|racecourse|\bitv racing\b|racing tv|cheltenham|ascot|aintree/i],
+  ['nba', /\bnba\b|basketball|euroleague|\bwnba\b/i],
+  ['hockey', /\bnhl\b|ice hockey|elite league hockey/i],
+  ['football', /premier league|\bepl\b|\bpl:|championship|league one|league two|la ?liga|serie a|bundesliga|ligue 1|champions league|europa|conference league|fa cup|\befl\b|carabao|scottish premiership|\bspfl\b|\bmls\b|eredivisie|copa |world cup qualif/i],
+];
+const CHANNEL_RULES = [
+  ['cricket', /cricket/i], ['golf', /golf/i], ['tennis', /tennis/i], ['motorsport', /\bf1\b|motor/i],
+  ['racing', /racing/i], ['darts', /darts/i], ['nfl', /\bnfl\b/i], ['nba', /\bnba\b/i], ['hockey', /\bnhl\b/i],
+  ['fighting', /boxing|\bufc\b|\bwwe\b/i], ['football', /football|\blfc\b|mutv|la ?liga|premier league|chelsea tv|\bepl\b/i],
+];
+const VERSUS = /\b[a-z0-9][a-z0-9 .'&-]* (v|vs|v\.|vs\.) [a-z0-9]/i;
+const SPORT_CHANNEL = /sport|tnt|dazn|eurosport|premier|racing|golf|cricket|\bf1\b|\bnfl\b|\bnba\b|\bnhl\b|\bmlb\b|espn|bein|viaplay|la ?liga|mutv|lfc|boxing|\bufc\b|darts|\bppv\b|setanta/i;
+const SKIP = /\bnews\b|off ?air|no event|no programme|closed?(down)?\b|test card|to be (announced|confirmed)|\btba\b|\btbc\b|programming|information|stand ?by/i;
+const FILLER = /\bhls\b|highlights|^\s*\(d\)|\breload(ed)?\b|\barchives?\b|radio commentary|^\s*(19|20)\d\d\/\d\d:|\breview\b|\bpreview\b|\bepisode\b|\bclassics?\b|\bwrap\b|magazine|\bon the fly\b|\bon fire\b|\byears\b|temples of sport|playing lessons|\brewind\b|\bgreatest\b|\blegends\b|\bdocumentar|\bfilm\b|\b(19|20)\d\d final round|\b(19|20)\d\d\/\d\d\s*$|\bquiz\b|\bpodcast\b|\bshow\b/i;
+const INTL = /^\s*\((?!uk\b|ie\b|roi\b)[a-z]{2,4}\)|now hk|\bastro\b|\bfubo\b|fox (sports|cricket)|supersport|\btsn\b|sportsnet|\bespn\b|\bsky sport \d|sky sport select|\b(us|usa|au|aus|nz|ca)\s*[:|]/i;
+const LIVE_MARK = /ᴸᶦᵛᵉ|ᴸᴵⱽᴱ|🔴/g;
+const LIVE_TEST = /ᴸᶦᵛᵉ|ᴸᴵⱽᴱ|🔴|\blive\b|\(l\)|\[l\]/i;
+
+function classify(title, channel) {
+  const sportChannel = SPORT_CHANNEL.test(channel);
+  const trusted = sportChannel || LIVE_TEST.test(title);
+  for (const [id, re] of TITLE_RULES) if (re.test(title)) return trusted && id ? id : null;
+  if (!sportChannel) return null;
+  for (const [id, re] of CHANNEL_RULES) if (re.test(channel)) return id;
+  if (VERSUS.test(title)) return 'football';
+  return null;
+}
+function finish(raw) {
+  const live = LIVE_TEST.test(raw);
+  let t = raw.replace(LIVE_MARK, ' ').replace(/\s*[\(\[]l[\)\]]\s*/gi, ' ').replace(/^\s*live:?\s+/i, '').replace(/\s+/g, ' ').trim();
+  if (!t || SKIP.test(t) || FILLER.test(t)) return null;
+  let comp = '';
+  const i = t.indexOf(' : ');
+  if (i > 0) { comp = t.slice(0, i).trim(); t = t.slice(i + 3).trim(); }
+  return { title: t || comp, comp: comp === t ? '' : comp, live };
+}
+const cleanChannel = n =>
+  n.replace(/^\s*(\|?[A-Z]{2,3}\|?\s*[:|\-]\s*)+/, '')
+   .replace(/[\s|\-]*(\bF?HD\b|\bSD\b|\bUHD\b|\b4K\b|\bHEVC\b|\b(50|60)\s?FPS\b|ᴴᴰ|ᶠᴴᴰ|ᵁᴴᴰ|\+)+\s*$/i, '')
+   .trim() || n.trim();
+function b64(s) {
+  if (!s) return '';
+  try {
+    const bin = atob(s);
+    const t = new TextDecoder('utf-8', { fatal: true }).decode(Uint8Array.from(bin, c => c.charCodeAt(0)));
+    return /[a-z]/i.test(t) ? t : s;
+  } catch { return s; }
+}
+
+// ---------- Merging the same game listed differently on several channels ----------
+const NUMS = { one: '1', two: '2', three: '3', four: '4', five: '5' };
+const STOP = new Set(['the', 'v', 'vs', 'at', 'and', 'live', 'fc', 'afc', 'cf']);
+function tokens(t) {
+  return new Set(t.toLowerCase().replace(/\b(one|two|three|four|five)\b/g, w => NUMS[w]).replace(/@/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ').split(' ').filter(w => w && !STOP.has(w)));
+}
+function similar(a, b) {
+  let shared = 0;
+  for (const w of a) if (b.has(w)) shared++;
+  return shared / Math.max(a.size, b.size, 1);
+}
+function mergeDupes(list) {
+  const out = [];
+  for (const e of list) {
+    const tk = tokens(e.title);
+    const twin = out.find(o => o.sport === e.sport && Math.abs(o.s - e.s) <= 90 * 60e3 && similar(o.tk, tk) >= 0.75);
+    if (twin) {
+      for (const c of e.channels) if (!twin.channels.includes(c)) twin.channels.push(c);
+      for (const st of e.streams || []) if (!twin.streams.some(x => x.id === st.id)) twin.streams.push(st);
+      twin.live = twin.live || e.live; twin.intl = twin.intl && e.intl;
+      twin.e = Math.max(twin.e, e.e);
+      if (!twin.comp && e.comp) twin.comp = e.comp;
+    } else out.push({ ...e, streams: [...(e.streams || [])], tk });
+  }
+  return out.map(({ tk, ...e }) => ({ ...e, channels: e.channels.slice(0, 5) }));
+}
+
+// ---------- Building the listings from the provider ----------
+function apiBase(login) {
+  return `${SERVER}/player_api.php?username=${encodeURIComponent(login.u)}&password=${encodeURIComponent(login.p)}`;
+}
+const GROUPS_MS = 12 * 3600e3, FULL_SCAN_MS = 6 * 3600e3;
+async function buildListings(login, onProgress, force) {
+  const base = apiBase(login);
+  const cached = store.get(GROUPS_KEY);
+  const fresh = cached && cached.user === login.u && Date.now() - cached.at < GROUPS_MS;
+  // Quick refresh: only the channels that had programmes last time, unless a full scan is due.
+  if (fresh && !force && cached.active && Date.now() - cached.scannedAt < FULL_SCAN_MS) {
+    return scan(base, cached.active, onProgress, { ...cached.stats, quick: true }, null);
+  }
+  let groupsList, stats0;
+  if (fresh) { groupsList = cached.list; stats0 = cached.stats; }
+  else ({ groupsList, stats0 } = await loadChannels(base));
+  const found = new Set();
+  const events = await scan(base, groupsList, onProgress, stats0, found);
+  store.set(GROUPS_KEY, { user: login.u, at: fresh ? cached.at : Date.now(), list: groupsList, stats: stats0,
+    active: groupsList.filter(g => found.has(g.id)), scannedAt: Date.now() });
+  return events;
+}
+async function loadChannels(base) {
+  const [cats, streams] = await Promise.all([
+    getJson(`${base}&action=get_live_categories`, F_CATS),
+    getJson(`${base}&action=get_live_streams`, F_STREAMS),
+  ]);
+  const catName = {};
+  for (const c of Array.isArray(cats) ? cats : []) catName[c.category_id] = c.category_name || '';
+
+  const groups = new Map();
+  let sportStreams = 0, noGuide = 0;
+  for (const st of Array.isArray(streams) ? streams : []) {
+    const name = st.name || '', cat = catName[st.category_id] || '';
+    if (!SPORT_CHANNEL.test(name) && !SPORT_CHANNEL.test(cat)) continue;
+    sportStreams++;
+    if (!st.epg_channel_id) { noGuide++; continue; } // no guide linked, so nothing to list
+    const key = st.epg_channel_id;
+    const g = groups.get(key) || { id: st.stream_id, raw: name, names: [], intl: INTL.test(name) || (/\b(usa?|aus?|nz|ca|ar|br|mx|es|fr|de|it|pt|nl|pl|tr|ar|in|za)\b\s*[:|]/i.test(cat) && !/\b(uk|gb|ie)\b/i.test(cat)), uk: /\b(uk|gb|ie|irl)\b/i.test(name + ' ' + cat) };
+    const clean = cleanChannel(name);
+    if (!g.names.includes(clean)) g.names.push(clean);
+    if (!g.arch && String(st.tv_archive) === '1') g.arch = { id: st.stream_id, days: Number(st.tv_archive_duration) || 2 };
+    groups.set(key, g);
+  }
+  const all = [...groups.values()];
+  const groupsList = [...all.filter(g => g.uk), ...all.filter(g => !g.uk && !g.intl), ...all.filter(g => !g.uk && g.intl)].slice(0, MAX_CHANNELS);
+  return { groupsList, stats0: { sportStreams, noGuide, sportChannels: all.length } };
+}
+async function scan(base, list, onProgress, stats0, found) {
+  const stats = { ...stats0, checked: list.length, failed: 0, programmes: 0, kept: 0, live: 0 };
+
+  const now = Date.now(), from = now - 18 * 3600e3, to = now + (DAYS + 0.5) * 24 * 3600e3;
+  const byKey = new Map();
+  let next = 0, done = 0;
+  async function worker() {
+    while (next < list.length) {
+      const g = list[next++];
+      let data = null;
+      // Full schedule first; the short guide is a fallback for servers without it.
+      try { data = await getJson(`${base}&action=get_simple_data_table&stream_id=${g.id}`, F_EPG); } catch { data = null; }
+      if (!data || !((data.epg_listings) || []).length) {
+        try { data = await getJson(`${base}&action=get_short_epg&stream_id=${g.id}&limit=60`, F_EPG); } catch { stats.failed++; }
+      }
+      const n = ((data && data.epg_listings) || []).length;
+      stats.programmes += n;
+      if (n && found) found.add(g.id);
+      onProgress(++done, list.length);
+      for (const it of (data && data.epg_listings) || []) {
+        const start = new Date(it.start_timestamp ? it.start_timestamp * 1000 : Date.parse(`${it.start}Z`));
+        const end = new Date(it.stop_timestamp ? it.stop_timestamp * 1000 : Date.parse(`${it.end}Z`));
+        if (isNaN(start) || start < from || start > to) continue;
+        const raw = b64(it.title).trim();
+        if (!raw) continue;
+        const sport = classify(raw, g.raw);
+        if (!sport) continue;
+        const f = finish(raw);
+        if (!f) continue;
+        const key = `${f.title.toLowerCase()}|${start.getTime()}`;
+        const hit = byKey.get(key);
+        if (hit) {
+          for (const n of g.names) if (!hit.channels.includes(n)) hit.channels.push(n);
+          if (!hit.streams.some(x => x.id === g.id)) hit.streams.push({ n: g.names[0], id: g.id, a: g.arch ? g.arch.days : 0, aid: g.arch ? g.arch.id : 0 });
+          hit.live = hit.live || f.live; hit.intl = hit.intl && g.intl;
+        } else {
+          byKey.set(key, { s: start.getTime(), e: isNaN(end) ? start.getTime() + 2 * 3600e3 : end.getTime(),
+            sport, title: f.title, comp: f.comp, live: f.live, intl: g.intl, channels: [...g.names], streams: [{ n: g.names[0], id: g.id, a: g.arch ? g.arch.days : 0, aid: g.arch ? g.arch.id : 0 }] });
+        }
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: IS_TV_BOX ? 5 : 12 }, worker));
+  const merged = mergeDupes([...byKey.values()].sort((a, b) => a.s - b.s || a.title.localeCompare(b.title)));
+  stats.kept = merged.length; stats.live = merged.filter(e => e.live).length;
+  store.set('stats', stats);
+  return merged;
+}
+
+// ---------- Screen ----------
+const SPORTS = [
+  { id: 'all', name: 'All sport' }, { id: 'football', name: 'Football' }, { id: 'rugby', name: 'Rugby' },
+  { id: 'cricket', name: 'Cricket' }, { id: 'tennis', name: 'Tennis' }, { id: 'golf', name: 'Golf' },
+  { id: 'motorsport', name: 'Motorsport' }, { id: 'fighting', name: 'Boxing & UFC' }, { id: 'darts', name: 'Darts' },
+  { id: 'snooker', name: 'Snooker' }, { id: 'racing', name: 'Horse racing' }, { id: 'nfl', name: 'NFL' },
+  { id: 'nba', name: 'Basketball' }, { id: 'hockey', name: 'Ice hockey' },
+];
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const FMT_DAY = new Intl.DateTimeFormat('en-CA', { timeZone: TZ });
+const FMT_HM = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: TZ });
+const dayKey = d => FMT_DAY.format(d);
+const keyFor = off => dayKey(new Date(Date.now() + off * 864e5));
+const hhmm = d => FMT_HM.format(d);
+// Work out each game's day and times once, not on every redraw.
+function prep(list) {
+  for (const e of list) {
+    if (!e.dk) e.dk = dayKey(new Date(e.s));
+    if (!e.hs) { e.hs = hhmm(new Date(e.s)); e.he = hhmm(new Date(e.e)); }
+    if (!e.q) e.q = (e.title + ' ' + e.comp + ' ' + e.channels.join(' ')).toLowerCase();
+  }
+  return list;
+}
+const niceDate = (off, o) => new Date(Date.now() + off * 864e5).toLocaleDateString('en-GB', { timeZone: TZ, ...o });
+const dayWord = d => d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : niceDate(d, { weekday: 'long' });
+const sportName = id => id === 'fav' ? 'Favourites' : ((SPORTS.find(s => s.id === id) || {}).name || id);
+
+let events = [], status = 'loading', updated = null, busy = false, showAll = false;
+const TV = !!(window.Native && Native.isTv && Native.isTv());
+let favs = store.get('favs') || [];
+let favRemind = !!store.get('favRemind');
+let reminders = {};
+try { reminders = JSON.parse(window.Native ? Native.getReminders() : (localStorage.getItem('rem') || '{}')) || {}; } catch {}
+const evId = e => `${e.sport}|${e.title}|${e.s}`.slice(0, 180);
+const isFav = e => favs.some(f => (e.title + ' ' + e.comp).toLowerCase().includes(f.toLowerCase()));
+const state = Object.assign({ day: 0, sport: 'all', q: '', live: true, intl: false }, store.get('view') || {}, { q: '', day: 0 });
+let hidden = store.get('hiddenCh') || [];
+const startView = store.get('startView') || 'last';
+if (startView !== 'last') state.sport = startView;
+// Events with hidden channels removed (and games only on hidden channels dropped).
+let shownCache = { ev: null, hid: '', list: [] };
+function shownEvents() {
+  if (!hidden.length) return events;
+  const hid = hidden.join('|');
+  if (shownCache.ev === events && shownCache.hid === hid) return shownCache.list;
+  const list = events.map(e => ({ ...e, channels: e.channels.filter(c => !hidden.includes(c)), streams: (e.streams || []).filter(st => !hidden.includes(st.n)) }))
+    .filter(e => e.channels.length);
+  shownCache = { ev: events, hid, list };
+  return list;
+}
+
+function saveView() { store.set('view', { day: state.day, sport: state.sport, live: state.live, intl: state.intl }); }
+function dayEvents() {
+  const k = keyFor(state.day);
+  return shownEvents().filter(e => (e.dk || dayKey(new Date(e.s))) === k && (state.intl || !e.intl) && (!state.live || e.live));
+}
+function visible() {
+  const q = state.q.trim().toLowerCase();
+  return dayEvents().filter(e =>
+    (state.sport === 'all' || (state.sport === 'fav' ? isFav(e) : e.sport === state.sport)) &&
+    (!q || (e.q || (e.title + ' ' + e.comp + ' ' + e.channels.join(' ')).toLowerCase()).includes(q)));
+}
+function renderChips() {
+  const de = dayEvents();
+  const chipList = favs.length ? [SPORTS[0], { id: 'fav', name: '★ Favourites' }, ...SPORTS.slice(1)] : SPORTS;
+  if (!favs.length && state.sport === 'fav') state.sport = 'all';
+  $('#chips').innerHTML = chipList.map(s => {
+    const n = s.id === 'all' ? de.length : s.id === 'fav' ? de.filter(isFav).length : de.filter(e => e.sport === s.id).length;
+    if (!n && s.id !== 'all' && s.id !== state.sport) return '';
+    return `<button class="chip" data-s="${s.id}" aria-pressed="${s.id === state.sport}">${esc(s.name)} <b>${n}</b></button>`;
+  }).join('');
+}
+function render() {
+  const keep = focusKey();
+  renderInner();
+  restoreFocus(keep);
+}
+function focusKey() {
+  const a = document.activeElement;
+  if (!a || a === document.body) return null;
+  if (a.matches('.ev')) return { sel: `.ev[data-id="${CSS.escape(a.dataset.id)}"]`, idx: [...document.querySelectorAll('#list .ev')].indexOf(a) };
+  if (a.id) return { sel: '#' + a.id };
+  if (a.dataset.d != null) return { sel: `#days button[data-d="${a.dataset.d}"]` };
+  if (a.dataset.s) return { sel: `#chips .chip[data-s="${a.dataset.s}"]` };
+  return null;
+}
+function restoreFocus(k) {
+  if (!k) return;
+  let el = document.querySelector(k.sel);
+  if (!el && k.idx != null) { const rows = document.querySelectorAll('#list .ev'); el = rows[Math.min(k.idx, rows.length - 1)]; }
+  if (el) el.focus({ preventScroll: true });
+}
+function renderInner() {
+  const now = Date.now();
+  $('#date').textContent = niceDate(state.day, { weekday: 'long', day: 'numeric', month: 'long' });
+  $('#h').textContent = dayWord(state.day) + "'s " + (state.sport === 'all' ? 'sport' : state.sport === 'fav' ? 'favourites' : sportName(state.sport).toLowerCase());
+  $('#days').innerHTML = Array.from({ length: DAYS }, (_, i) =>
+    `<button data-d="${i}" aria-pressed="${i === state.day}">${i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : niceDate(i, { weekday: 'short', day: 'numeric' })}</button>`).join('');
+  $('#liveOnly').checked = state.live;
+  $('#intl').checked = state.intl;
+  renderChips();
+  $('#note').textContent = updated ? `All times UK. Listings updated ${hhmm(new Date(updated))}.` : 'All times UK.';
+
+  if (!events.length && status !== 'ready') {
+    $('#sum').textContent = '';
+    $('#list').innerHTML = status === 'loading'
+      ? '<li class="empty"><strong>Loading listings…</strong>Fetching the guide from your line. This takes a few seconds the first time.</li>'
+      : `<li class="empty"><strong>Listings unavailable</strong>${esc(status)}</li>`;
+    return;
+  }
+  const list = visible();
+  const onNow = list.filter(e => e.s <= now && e.e > now).length;
+  $('#sum').textContent = list.length ? `${list.length} ${state.live ? 'live game' : 'listing'}${list.length > 1 ? 's' : ''}${onNow ? ` · ${onNow} on now` : ''}` : '';
+  const limit = TV && !showAll ? 60 : Infinity;
+  const extra = list.length - Math.min(list.length, limit);
+  $('#list').innerHTML = list.length ? list.slice(0, limit).map(e => {
+    const live = e.s <= now && e.e > now, done = e.e <= now;
+    const id = evId(e), rem = !!reminders[id];
+    return `<li class="ev${done ? ' done' : ''}" data-id="${esc(id)}"${TV ? ' tabindex="0"' : ''}>${done || live ? '' : `<button class="bell${rem ? ' on' : ''}" data-id="${esc(id)}" aria-label="${rem ? 'Cancel reminder' : 'Remind me'}" aria-pressed="${rem}">${rem ? '🔔' : '🔕'}</button>`}
+      <div class="t">${e.hs || hhmm(new Date(e.s))}<small>${done ? 'Finished' : 'to ' + (e.he || hhmm(new Date(e.e)))}</small></div>
+      <div><div class="ti">${esc(e.title)}</div>${e.comp ? `<div class="co">${esc(e.comp)}</div>` : ''}
+      <div class="meta">${!done && (e.streams || []).length ? `<button class="watch" data-id="${esc(id)}" aria-label="Watch ${esc(e.title)}">▶ Watch</button>` : ''}${canCatchUp(e, now) ? `<button class="catch" data-id="${esc(id)}" aria-label="Watch ${esc(e.title)} from the start">⏮ ${done ? 'Replay' : 'From start'}</button>` : ''}${live ? '<span class="live"><i></i>ON NOW</span>' : ''}${!state.live && e.live && !live ? '<span class="billed">Live</span>' : ''}${e.channels.map(c => `<button class="ch" data-ch="${esc(c)}">${esc(c)}</button>`).join('')}${state.sport === 'all' ? `<span class="sp">${esc(sportName(e.sport))}</span>` : ''}</div></div></li>`;
+  }).join('') + (extra > 0 ? `<li><button class="btn big" id="showAll" style="margin:14px 0">Show all ${list.length} games</button></li>` : '') : `<li class="empty"><strong>Nothing on</strong>${state.live ? 'No live games match. Untick “Live games only” to include repeats.' : 'No listings match. Try another sport or day.'}</li>`;
+}
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast.k); toast.k = setTimeout(() => t.classList.remove('on'), 1800); }
+
+function explain(err) {
+  if (err && (err.status === 512 || err.status === 403)) return 'The server refused the connection. Check your line is active, or try again on a different network.';
+  if (err && err.status === 401) return 'Your username or password was rejected.';
+  if (err && err.status === 0) return 'Couldn\'t reach the server. Check your internet connection.';
+  return 'The guide couldn\'t be loaded. Please try again shortly.';
+}
+
+function saveReminders() { if (!window.Native) localStorage.setItem('rem', JSON.stringify(reminders)); }
+function addReminder(e) {
+  const id = evId(e), at = e.s - 15 * 60e3;
+  if (at <= Date.now() || reminders[id]) return false;
+  const text = `${hhmm(new Date(e.s))} on ${e.channels.slice(0, 3).join(' / ')}${e.comp ? ' · ' + e.comp : ''}`;
+  reminders[id] = { at, title: e.title, text };
+  if (window.Native) { Native.askNotifications(); Native.setReminder(id, String(at), e.title, text); }
+  saveReminders();
+  return true;
+}
+function removeReminder(id) {
+  delete reminders[id];
+  if (window.Native) Native.cancelReminder(id);
+  saveReminders();
+}
+function afterRefresh() {
+  const now = Date.now();
+  const upcoming = shownEvents().filter(e => e.live && !e.intl && e.e > now).slice(0, 12)
+    .map(e => ({ s: e.s, e: e.e, title: e.title, ch: e.channels[0] || '' }));
+  if (window.Native) Native.saveWidget(JSON.stringify(upcoming));
+  if (favRemind && favs.length) {
+    let added = 0;
+    for (const e of events) if (e.live && isFav(e) && addReminder(e)) added++;
+    if (added) toast(`${added} favourite reminder${added > 1 ? 's' : ''} set`);
+  }
+  for (const [id, r] of Object.entries(reminders)) if (r.at < now - 3600e3) delete reminders[id];
+}
+
+async function refresh(force) {
+  const login = getLogin();
+  if (!login || busy) return;
+  if (!force && updated && Date.now() - updated < REFRESH_MS) return;
+  busy = true;
+  if (!events.length) { status = 'loading'; render(); }
+  $('#bar').hidden = false; $('#barFill').style.width = '5%';
+  try {
+    const list = await buildListings(login, (d, t) => { $('#barFill').style.width = Math.max(5, Math.round(d / t * 100)) + '%'; }, force === 'full');
+    events = prep(list); updated = Date.now(); status = 'ready';
+    store.set('cache', { updated, events });
+    afterRefresh();
+  } catch (err) {
+    if (events.length) toast('Couldn\'t refresh. Showing earlier listings.');
+    else status = explain(err);
+  }
+  busy = false;
+  $('#bar').hidden = true;
+  render();
+}
+
+// ---------- Sign in ----------
+function showLogin(msg) {
+  $('#mainView').hidden = true; $('#loginView').hidden = false;
+  $('#loginErr').textContent = msg || '';
+}
+function showMain() {
+  $('#loginView').hidden = true; $('#mainView').hidden = false;
+  const cache = store.get('cache');
+  if (cache && cache.events && Date.now() - cache.updated < 24 * 3600e3) { events = prep(cache.events); updated = cache.updated; status = 'ready'; }
+  render();
+  if (TV) setTimeout(() => { const f = $('#list .ev') || $('#days button[aria-pressed=true]'); if (f && document.activeElement === document.body) f.focus(); }, 300);
+  refresh(false);
+  checkUpdate();
+}
+$('#loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const login = { u: $('#u').value.trim(), p: $('#pw').value };
+  if (!login.u || !login.p) return;
+  $('#loginBtn').disabled = true; $('#loginBtn').textContent = 'Checking…'; $('#loginErr').textContent = '';
+  try {
+    const info = await getJson(apiBase(login));
+    const ok = info && info.user_info && String(info.user_info.auth) === '1';
+    if (!ok) throw Object.assign(new Error('auth'), { status: 401 });
+    if (info.user_info.status && !/active/i.test(info.user_info.status)) throw Object.assign(new Error('inactive'), { status: 403 });
+    setLogin(login);
+    store.set('serverTz', (info.server_info && info.server_info.timezone) || '');
+    store.set('cache', null); store.set(GROUPS_KEY, null); events = []; updated = null;
+    $('#pw').value = '';
+    showMain();
+  } catch (err) {
+    $('#loginErr').textContent = explain(err);
+  }
+  $('#loginBtn').disabled = false; $('#loginBtn').textContent = 'Sign in';
+});
+// ---------- Watching ----------
+let playerMode = store.get('playerMode') || 'builtin';
+function streamUrls(id) {
+  const login = getLogin();
+  if (!login) return [];
+  const b = `${SERVER}/live/${encodeURIComponent(login.u)}/${encodeURIComponent(login.p)}/${id}`;
+  return [`${b}.m3u8`, `${b}.ts`];
+}
+function play(stream, title) {
+  const urls = streamUrls(stream.id);
+  if (!urls.length) return;
+  if (window.Native && Native.play) Native.play(JSON.stringify(urls), `${title} · ${stream.n}`, playerMode, USER_AGENT);
+  else toast('Watching works in the Android app');
+}
+$('#list').addEventListener('click', e => {
+  const b = e.target.closest('.watch'); if (!b) return;
+  const ev = events.find(x => evId(x) === b.dataset.id);
+  if (!ev || !(ev.streams || []).length) return;
+  if (ev.streams.length === 1) return play(ev.streams[0], ev.title);
+  $('#chGame').textContent = ev.title;
+  $('#chList').innerHTML = ev.streams.map((st, i) => `<button class="opt" data-i="${i}">${esc(st.n)}</button>`).join('');
+  $('#chList').onclick = x => { const o = x.target.closest('.opt'); if (!o) return; $('#chSheet').hidden = true; play(ev.streams[+o.dataset.i], ev.title); };
+  $('#chSheet').hidden = false;
+  setTimeout(() => { const f = $('#chList .opt'); if (f) f.focus(); }, 50);
+});
+$('#chClose').addEventListener('click', () => { $('#chSheet').hidden = true; });
+$('#chSheet').addEventListener('click', e => { if (e.target.id === 'chSheet') $('#chSheet').hidden = true; });
+
+// ---------- Catch-up (watch from the start) ----------
+function canCatchUp(e, now) {
+  if (e.s > now) return false;
+  return (e.streams || []).some(st => st.a > 0 && now - e.s < st.a * 864e5);
+}
+function serverTime(ms) {
+  const tz = store.get('serverTz') || 'UTC';
+  let parts;
+  try { parts = new Intl.DateTimeFormat('en-GB', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date(ms)); }
+  catch { parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date(ms)); }
+  const v = t => (parts.find(p => p.type === t) || {}).value;
+  return `${v('year')}-${v('month')}-${v('day')}:${v('hour') === '24' ? '00' : v('hour')}-${v('minute')}`;
+}
+function catchUpUrls(st, e) {
+  const login = getLogin();
+  if (!login) return [];
+  const start = serverTime(e.s - 5 * 60e3);
+  const mins = Math.ceil((e.e - e.s) / 60e3) + 15;
+  const u = encodeURIComponent(login.u), p = encodeURIComponent(login.p);
+  return [
+    `${SERVER}/timeshift/${u}/${p}/${mins}/${start}/${st.aid}.ts`,
+    `${SERVER}/streaming/timeshift.php?username=${u}&password=${p}&stream=${st.aid}&start=${start}&duration=${mins}`,
+  ];
+}
+function playCatchUp(st, e) {
+  const urls = catchUpUrls(st, e);
+  if (!urls.length) return;
+  if (window.Native && Native.play) Native.play(JSON.stringify(urls), `${e.title} · from the start`, playerMode, USER_AGENT);
+  else toast('Watching works in the Android app');
+}
+$('#list').addEventListener('click', e => {
+  const b = e.target.closest('.catch'); if (!b) return;
+  const ev = shownEvents().find(x => evId(x) === b.dataset.id);
+  if (!ev) return;
+  const opts = ev.streams.filter(st => st.a > 0);
+  if (opts.length === 1) return playCatchUp(opts[0], ev);
+  $('#chGame').textContent = `${ev.title} · from the start`;
+  $('#chList').innerHTML = opts.map((st, i) => `<button class="opt" data-i="${i}">${esc(st.n)}</button>`).join('');
+  $('#chList').onclick = x => { const o = x.target.closest('.opt'); if (!o) return; $('#chSheet').hidden = true; playCatchUp(opts[+o.dataset.i], ev); };
+  $('#chSheet').hidden = false;
+});
+
+// ---------- Hiding channels ----------
+let hideTarget = null;
+$('#list').addEventListener('click', e => {
+  const b = e.target.closest('button.ch'); if (!b) return;
+  hideTarget = b.dataset.ch;
+  $('#hideTitle').textContent = hideTarget;
+  $('#hideSheet').hidden = false;
+  setTimeout(() => $('#hideNo').focus(), 50);
+});
+$('#hideYes').addEventListener('click', () => {
+  if (hideTarget && !hidden.includes(hideTarget)) hidden.push(hideTarget);
+  store.set('hiddenCh', hidden); $('#hideSheet').hidden = true;
+  toast(`${hideTarget} hidden`); render(); afterRefresh();
+});
+$('#hideNo').addEventListener('click', () => { $('#hideSheet').hidden = true; });
+$('#hideSheet').addEventListener('click', e => { if (e.target.id === 'hideSheet') $('#hideSheet').hidden = true; });
+
+// ---------- Update alerts ----------
+// What people see: "1.0" from the app, and "Reborn Sport 1.1" from the release name.
+const myVersion = () => (window.Native && Native.versionName && Native.versionName()) || '';
+const relVersion = rel => (String(rel.name || '').match(/(\d+(?:\.\d+)+)/) || [])[1] || '';
+// Checks GitHub for a newer build each time the app opens, and from Settings.
+let updateCheckedThisRun = false;
+async function checkUpdate(manual) {
+  const status = msg => { if (manual) { $('#updStatus').hidden = false; $('#updStatus').textContent = msg; } };
+  if (!window.Native || !Native.buildNumber) { status('Updates are checked in the Android app.'); return; }
+  if (!manual && updateCheckedThisRun) return;
+  updateCheckedThisRun = true;
+  if (manual) { $('#updDownload').hidden = true; status('Checking for updates…'); }
+  try {
+    const rel = await getJson(UPDATE_API);
+    const n = parseInt(String(rel.tag_name || '').replace(/\D+/g, ''), 10);
+    const asset = (rel.assets || []).find(a => /\.apk$/i.test(a.name));
+    const mine = Native.buildNumber();
+    const newV = relVersion(rel), curV = myVersion();
+    if (!n || !asset || n <= mine) { status(`✓ You have the latest version${curV ? ` (${curV})` : ''}. Checked ${hhmm(new Date())}.`); return; }
+    if (manual) {
+      status(newV ? `Reborn Sport ${newV} is available. You have ${curV || 'an older version'}.` : 'A new version of Reborn Sport is available.');
+      $('#updDownload').hidden = false;
+      $('#updDownload').onclick = () => Native.openUrl(asset.browser_download_url);
+      setTimeout(() => $('#updDownload').focus(), 30);
+    }
+    if (!manual && n === store.get('skipBuild')) return;
+    $('#updateText').textContent = newV ? `Reborn Sport ${newV} is available.` : 'A new version of Reborn Sport is available.';
+    $('#updateGo').onclick = () => { Native.openUrl(asset.browser_download_url); $('#updateBar').hidden = true; };
+    $('#updateX').onclick = () => { store.set('skipBuild', n); $('#updateBar').hidden = true; };
+    $('#updateBar').hidden = false;
+  } catch (err) { status(`Couldn't reach GitHub to check (${err && err.status ? 'error ' + err.status : 'no connection'}). Try again shortly.`); }
+}
+
+// ---------- TV remote ----------
+function openSheet() { return ['actSheet', 'chSheet', 'hideSheet', 'setSheet', 'favSheet'].map(id => $('#' + id)).find(el => !el.hidden); }
+function navTargets() {
+  const scope = openSheet() || ($('#loginView').hidden ? $('#mainView') : $('#loginView'));
+  return [...scope.querySelectorAll('button:not([disabled]):not([tabindex="-1"]), input, select, .ev[tabindex="0"]')]
+    .filter(el => el.offsetParent !== null && !el.closest('.ev:not(:focus-within) .meta') && !el.closest('.ev > .bell') && !(el.closest('.ev') && el.tagName === 'BUTTON'));
+}
+// Fast paths: next/previous game in the list, next/previous day or sport. No measuring needed.
+function quickMove(cur, dir) {
+  if (!cur || openSheet()) return null;
+  if (cur.matches('#list .ev')) {
+    if (dir === 'down') {
+      let n = cur.nextElementSibling;
+      while (n && !n.matches('.ev') && !n.querySelector('#showAll')) n = n.nextElementSibling;
+      return n ? (n.matches('.ev') ? n : n.querySelector('#showAll')) : null;
+    }
+    if (dir === 'up') {
+      let n = cur.previousElementSibling;
+      while (n && !n.matches('.ev')) n = n.previousElementSibling;
+      return n;   // null at the first game: fall back to the full search (goes up to the search row)
+    }
+    return cur;   // left/right on a game: stay put
+  }
+  if (cur.id === 'showAll' && dir === 'up') { const rows = document.querySelectorAll('#list .ev'); return rows[rows.length - 1] || null; }
+  // Down from a sport goes straight to the games, skipping the search row
+  // (some TVs open the keyboard as soon as the search box is highlighted).
+  if (cur.closest('#chips') && dir === 'down') return $('#list .ev') || $('#showAll') || null;
+  const strip = cur.closest('#days, #chips');
+  if (strip && (dir === 'left' || dir === 'right')) {
+    const n = dir === 'right' ? cur.nextElementSibling : cur.previousElementSibling;
+    return n || cur;
+  }
+  return null;
+}
+function moveFocus(dir) {
+  const fast = quickMove(document.activeElement, dir);
+  if (fast) {
+    if (fast !== document.activeElement) {
+      fast.focus({ preventScroll: true });
+      fast.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+    return;
+  }
+  const items = navTargets();
+  if (!items.length) return;
+  const cur = document.activeElement;
+  if (!items.includes(cur)) { items[0].focus(); items[0].scrollIntoView({ block: 'nearest' }); return; }
+  const c = cur.getBoundingClientRect(), cx = c.left + c.width / 2, cy = c.top + c.height / 2;
+  let best = null, bestScore = Infinity;
+  for (const el of items) {
+    if (el === cur) continue;
+    const r = el.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    const dx = x - cx, dy = y - cy;
+    const gapX = Math.max(0, r.left - c.right, c.left - r.right);   // 0 when they overlap horizontally
+    let main, side;
+    if (dir === 'down') { if (r.top < c.bottom - 4) continue; main = r.top - c.bottom; side = gapX * 3 + Math.abs(dx) * 0.05; }
+    else if (dir === 'up') { if (r.bottom > c.top + 4) continue; main = c.top - r.bottom; side = gapX * 3 + Math.abs(dx) * 0.05; }
+    else if (dir === 'right') { if (r.left < c.right - 4 || Math.abs(dy) > Math.max(c.height, r.height)) continue; main = dx; side = Math.abs(dy); }
+    else { if (r.right > c.left + 4 || Math.abs(dy) > Math.max(c.height, r.height)) continue; main = -dx; side = Math.abs(dy); }
+    const score = main + (dir === 'up' || dir === 'down' ? side : side * 3);
+    if (score < bestScore) { bestScore = score; best = el; }
+  }
+  if (best) {
+    best.focus({ preventScroll: true });
+    best.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    if (best.matches('.ev') && best === $('#list .ev') ) window.scrollBy(0, 0);
+  } else if (dir === 'up') window.scrollTo({ top: 0 });
+}
+let actRow = null;
+function closeActions() {
+  $('#actSheet').hidden = true;
+  render();
+  const row = actRow && document.querySelector(`#list .ev[data-id="${CSS.escape(actRow)}"]`);
+  if (row) row.focus({ preventScroll: true });
+}
+function openActions(ev) {
+  actRow = evId(ev);
+  const now = Date.now(), done = ev.e <= now, id = evId(ev);
+  const acts = [];
+  if (!done) for (const st of ev.streams || []) acts.push([`▶ Watch on ${st.n}`, () => play(st, ev.title)]);
+  if (canCatchUp(ev, now)) for (const st of ev.streams.filter(x => x.a > 0)) acts.push([`⏮ ${done ? 'Replay' : 'From start'} on ${st.n}`, () => playCatchUp(st, ev)]);
+  if (ev.s > now + 15 * 60e3) acts.push(reminders[id] ? ['🔕 Cancel reminder', () => { removeReminder(id); toast('Reminder cancelled'); }]
+                                                    : ['🔔 Remind me 15 minutes before', () => { addReminder(ev); toast('Reminder set'); }]);
+  for (const c of ev.channels) acts.push([`Hide ${c}`, () => { if (!hidden.includes(c)) hidden.push(c); store.set('hiddenCh', hidden); toast(`${c} hidden`); afterRefresh(); }]);
+  $('#actTitle').textContent = ev.title;
+  $('#actSub').textContent = `${hhmm(new Date(ev.s))} – ${hhmm(new Date(ev.e))}${ev.comp ? ' · ' + ev.comp : ''}`;
+  $('#actList').innerHTML = acts.map((a, i) => `<button class="opt" data-i="${i}">${esc(a[0])}</button>`).join('');
+  $('#actList').onclick = x => { const o = x.target.closest('.opt'); if (!o) return; acts[+o.dataset.i][1](); closeActions(); };
+  $('#actSheet').hidden = false;
+  setTimeout(() => { const f = $('#actList .opt'); if (f) f.focus(); }, 30);
+}
+$('#actClose').addEventListener('click', closeActions);
+$('#actSheet').addEventListener('click', e => { if (e.target.id === 'actSheet') closeActions(); });
+let kbOpen = false;
+document.addEventListener('focusout', e => { if (e.target && e.target.tagName === 'INPUT') kbOpen = false; });
+document.addEventListener('keydown', e => {
+  if (!TV) return;
+  const dirs = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
+  const a = document.activeElement;
+  // Inside a text box, left/right move the cursor; up/down leave the box.
+  if (a && a.tagName === 'INPUT' && a.type !== 'checkbox' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+    let pos = null; try { pos = a.selectionStart; } catch {}
+    const atEdge = pos == null || (e.key === 'ArrowRight' ? pos >= a.value.length : pos <= 0);
+    if (!atEdge) return;   // still moving the cursor within the text
+  }
+  if (dirs[e.key]) { e.preventDefault(); moveFocus(dirs[e.key]); return; }
+  if (e.key === 'Enter') {
+    if (a && a.matches('.ev')) { e.preventDefault(); const ev = shownEvents().find(x => evId(x) === a.dataset.id); if (ev) openActions(ev); return; }
+    if (a && a.tagName === 'INPUT' && a.type !== 'checkbox') {
+      e.preventDefault();
+      if (!kbOpen) { kbOpen = true; if (Native.showKeyboard) Native.showKeyboard(); return; }
+      // Done/OK on the keyboard: close it and jump to the first result.
+      kbOpen = false;
+      if (Native.hideKeyboard) Native.hideKeyboard();
+      const first = a.id === 'q' && $('#list .ev');
+      if (first) { first.focus({ preventScroll: true }); first.scrollIntoView({ block: 'center' }); } else a.blur();
+      return;
+    }
+    if (a && a.tagName === 'INPUT' && a.type === 'checkbox') { e.preventDefault(); a.click(); return; }
+  }
+});
+
+// ---------- Settings ----------
+function renderSettings() {
+  let players = [];
+  try { players = window.Native && Native.getPlayers ? JSON.parse(Native.getPlayers()) : []; } catch {}
+  if (playerMode !== 'builtin' && playerMode !== 'ask' && !players.some(p => p.pkg === playerMode)) playerMode = 'builtin';
+  const opts = [
+    { id: 'builtin', label: 'Reborn Sport player', note: 'Built in, works everywhere' },
+    { id: 'ask', label: 'Ask every time', note: 'Pick a player each time you watch' },
+    ...players.map(p => ({ id: p.pkg, label: p.label, note: 'Installed on this device' })),
+  ];
+  $('#playerList').innerHTML = opts.map(o => `<button class="opt" data-mode="${esc(o.id)}" aria-pressed="${o.id === playerMode}"><span>${esc(o.label)}<small>${esc(o.note)}</small></span></button>`).join('');
+  const startOpts = [['last', 'Where I left off'], ['all', 'All sport'], ...(favs.length ? [['fav', '★ Favourites']] : []), ...SPORTS.slice(1).map(x => [x.id, x.name])];
+  $('#startSel').innerHTML = startOpts.map(([v, l]) => `<option value="${v}"${v === (store.get('startView') || 'last') ? ' selected' : ''}>${esc(l)}</option>`).join('');
+  $('#hiddenList').innerHTML = hidden.length
+    ? hidden.map((c, i) => `<span class="team">${esc(c)}<button data-i="${i}" aria-label="Show ${esc(c)} again">×</button></span>`).join('')
+    : '<span style="color:var(--mut);font-size:14px">None</span>';
+  $('#verLine').textContent = myVersion() ? `Reborn Sport version ${myVersion()}` : 'Reborn Sport';
+  const st = store.get('stats');
+  $('#statsBox').textContent = st
+    ? `${st.kept} sport listings (${st.live} live) from ${st.checked} channel guides${st.quick ? ' (quick refresh)' : ''}. ${st.programmes} programmes read${st.failed ? `, ${st.failed} channels didn't respond` : ''}.${st.noGuide != null ? ` ${st.noGuide} of ${st.sportStreams} sport channels have no guide.` : ''}`
+    : 'No listings loaded yet.';
+}
+$('#settingsBtn').addEventListener('click', () => { renderSettings(); $('#setSheet').hidden = false; setTimeout(() => { const f = $('#playerList .opt[aria-pressed=true]'); if (f) f.focus(); }, 50); });
+$('#playerList').addEventListener('click', e => {
+  const o = e.target.closest('.opt'); if (!o) return;
+  playerMode = o.dataset.mode; store.set('playerMode', playerMode); renderSettings();
+});
+$('#setClose').addEventListener('click', () => { $('#setSheet').hidden = true; });
+$('#checkUpd').addEventListener('click', () => checkUpdate(true));
+$('#startSel').addEventListener('change', e => { store.set('startView', e.target.value); toast('Start screen saved'); });
+$('#hiddenList').addEventListener('click', e => {
+  const b = e.target.closest('button[data-i]'); if (!b) return;
+  hidden.splice(+b.dataset.i, 1); store.set('hiddenCh', hidden); renderSettings(); render(); afterRefresh();
+});
+$('#setSheet').addEventListener('click', e => { if (e.target.id === 'setSheet') $('#setSheet').hidden = true; });
+
+$('#signout').addEventListener('click', () => {
+  $('#setSheet').hidden = true;
+  setLogin(null); store.set('cache', null); store.set(GROUPS_KEY, null); events = []; updated = null;
+  showLogin('Signed out.');
+});
+
+// ---------- Controls ----------
+$('#chips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; showAll = false; state.sport = b.dataset.s; saveView(); render(); });
+$('#days').addEventListener('click', e => { const b = e.target.closest('button[data-d]'); if (!b) return; showAll = false; state.day = +b.dataset.d; render(); window.scrollTo(0, 0); });
+let searchTimer = 0;
+$('#q').addEventListener('input', e => {
+  state.q = e.target.value;
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => { showAll = false; render(); }, TV ? 450 : 150);
+});
+$('#list').addEventListener('click', e => { if (e.target.id === 'showAll') { showAll = true; render(); const rows = document.querySelectorAll('#list .ev'); if (rows[60]) rows[60].focus(); } });
+$('#liveOnly').addEventListener('change', e => { state.live = e.target.checked; saveView(); render(); });
+$('#intl').addEventListener('change', e => { state.intl = e.target.checked; saveView(); render(); });
+$('#refresh').addEventListener('click', () => refresh('full'));
+$('#list').addEventListener('click', e => {
+  const b = e.target.closest('.bell'); if (!b) return;
+  const id = b.dataset.id;
+  if (reminders[id]) { removeReminder(id); toast('Reminder cancelled'); }
+  else {
+    const ev = events.find(x => evId(x) === id);
+    if (ev && addReminder(ev)) toast('Reminder set for 15 minutes before');
+    else toast('Too close to kick-off for a reminder');
+  }
+  render();
+});
+
+function renderFavs() {
+  $('#favList').innerHTML = favs.length
+    ? favs.map((f, i) => `<span class="team">${esc(f)}<button data-i="${i}" aria-label="Remove ${esc(f)}">×</button></span>`).join('')
+    : '<span style="color:var(--mut)">No favourites yet.</span>';
+  $('#favRemind').checked = favRemind;
+}
+$('#favBtn').addEventListener('click', () => { renderFavs(); $('#favSheet').hidden = false; setTimeout(() => $('#favInput').focus(), 50); });
+$('#favForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = $('#favInput').value.split(',').map(x => x.trim()).filter(Boolean);
+  for (const f of v) if (!favs.some(x => x.toLowerCase() === f.toLowerCase())) favs.push(f);
+  store.set('favs', favs); $('#favInput').value = ''; renderFavs(); render();
+});
+$('#favList').addEventListener('click', e => {
+  const b = e.target.closest('button[data-i]'); if (!b) return;
+  favs.splice(+b.dataset.i, 1); store.set('favs', favs); renderFavs(); render();
+});
+$('#favRemind').addEventListener('change', e => {
+  favRemind = e.target.checked; store.set('favRemind', favRemind);
+  if (favRemind) { if (window.Native) Native.askNotifications(); afterRefresh(); render(); }
+});
+$('#favClose').addEventListener('click', () => { $('#favSheet').hidden = true; });
+$('#favSheet').addEventListener('click', e => { if (e.target.id === 'favSheet') $('#favSheet').hidden = true; });
+
+let pullY = null, pulled = 0;
+document.addEventListener('touchstart', e => { pullY = (window.scrollY <= 0 && !$('#mainView').hidden && $('#favSheet').hidden && $('#setSheet').hidden && $('#chSheet').hidden && $('#hideSheet').hidden) ? e.touches[0].clientY : null; pulled = 0; }, { passive: true });
+document.addEventListener('touchmove', e => {
+  if (pullY === null) return;
+  pulled = e.touches[0].clientY - pullY;
+  const ptr = $('#ptr');
+  ptr.classList.toggle('show', pulled > 20);
+  ptr.textContent = pulled > 80 ? 'Release to refresh' : 'Pull to refresh';
+}, { passive: true });
+document.addEventListener('touchend', () => {
+  if (pullY !== null && pulled > 80) refresh('quick');
+  pullY = null; pulled = 0; $('#ptr').classList.remove('show');
+});
+
+if (window.Native && Native.isTv && Native.isTv()) document.body.classList.add('tv');
+$('#copy').addEventListener('click', () => {
+  const now = Date.now();
+  const list = visible().filter(e => e.e > now);
+  const head = `${dayWord(state.day)}'s ${state.sport === 'all' ? 'sport' : sportName(state.sport)} — ${niceDate(state.day, { weekday: 'short', day: 'numeric', month: 'short' })}`;
+  const line = e => `${e.s <= now ? 'NOW  ' : hhmm(new Date(e.s)) + ' '} ${e.title} — ${e.channels.slice(0, 3).join(' / ')}`;
+  let bodyText;
+  if (!list.length) bodyText = 'Nothing else on';
+  else if (state.sport === 'all') {
+    bodyText = SPORTS.slice(1).map(sp => {
+      const games = list.filter(e => e.sport === sp.id);
+      return games.length ? `\n${sp.name.toUpperCase()}\n` + games.map(line).join('\n') : '';
+    }).filter(Boolean).join('\n').trim();
+  } else bodyText = list.map(line).join('\n');
+  const text = head + '\n' + bodyText;
+  if (window.Native) { Native.copy(text); toast('List copied'); }
+  else navigator.clipboard.writeText(text).then(() => toast('List copied'), () => toast('Copy was blocked'));
+});
+// Android back button: clear the search or go back to All sport before leaving the app.
+window.onBack = () => {
+  if (!$('#actSheet').hidden) { closeActions(); return true; }
+  if (!$('#favSheet').hidden) { $('#favSheet').hidden = true; return true; }
+  if (!$('#setSheet').hidden) { $('#setSheet').hidden = true; return true; }
+  if (!$('#chSheet').hidden) { $('#chSheet').hidden = true; return true; }
+  if (!$('#hideSheet').hidden) { $('#hideSheet').hidden = true; return true; }
+  if (state.q) { state.q = ''; $('#q').value = ''; render(); return true; }
+  if (state.sport !== 'all') { state.sport = 'all'; saveView(); render(); return true; }
+  if (state.day !== 0) { state.day = 0; render(); return true; }
+  return false;
+};
+// Background refresh while the app stays open on screen: every 15 minutes,
+// but never while a menu is open or someone is actively scrolling or pressing keys.
+let lastInteract = Date.now();
+for (const ev of ['touchstart', 'keydown', 'wheel', 'scroll']) document.addEventListener(ev, () => { lastInteract = Date.now(); }, { passive: true, capture: true });
+setInterval(() => {
+  if (document.hidden || $('#mainView').hidden || busy) return;
+  if (!updated || Date.now() - updated < REFRESH_MS) return;
+  if (openSheet() || Date.now() - lastInteract < 20000) return;
+  refresh(false);
+}, 60000);
+
+let hiddenAt = 0;
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { hiddenAt = Date.now(); return; }
+  if ($('#mainView').hidden) return;
+  refresh(false);
+  if (hiddenAt && Date.now() - hiddenAt > 30 * 60e3) { updateCheckedThisRun = false; checkUpdate(false); }
+});
+let lastTickSig = '';
+setInterval(() => {
+  if ($('#mainView').hidden) return;
+  const now = Date.now();
+  const sig = visible().map(e => (e.e <= now ? 'd' : e.s <= now ? 'l' : 'u')).join('') + '|' + new Date().getMinutes();
+  // On TV, only redraw when a game starts or finishes; phones also refresh the time-based labels.
+  const changed = sig.split('|')[0] !== lastTickSig.split('|')[0];
+  lastTickSig = sig;
+  if (changed || !TV) render();
+}, 60000);
+
+if (getLogin()) showMain(); else showLogin();
+}
+</script>
+</body>
+</html>

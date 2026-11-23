@@ -1,0 +1,60 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.rebornsport.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.rebornsport.app'
+        minSdk 24
+        targetSdk 34
+        // The build number comes from GitHub Actions so the app can tell when a newer build exists.
+        versionCode Integer.parseInt(System.getenv('BUILD_NUMBER') ?: '1')
+        // What people see (e.g. 1.0, 1.1). Set in version.txt; the build number above stays hidden.
+        versionName rootProject.file('version.txt').text.trim()
+    }
+
+    // The signing key lives in GitHub Secrets, never in the code. The build
+    // workflow writes it to release.keystore before building.
+    signingConfigs {
+        release {
+            storeFile file('release.keystore')
+            storePassword System.getenv('SIGNING_PASSWORD')
+            keyAlias 'app'
+            keyPassword System.getenv('SIGNING_PASSWORD')
+        }
+    }
+
+    buildTypes {
+        release {
+            // Shrinks the bundled video player so the APK stays small.
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    // Lines up the Kotlin library versions pulled in by different dependencies.
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+    implementation 'androidx.security:security-crypto:1.0.0'
+    implementation 'androidx.media3:media3-exoplayer:1.4.1'
+    implementation 'androidx.media3:media3-exoplayer-hls:1.4.1'
+    implementation 'androidx.media3:media3-ui:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.mediarouter:mediarouter:1.7.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:21.5.0'
+    implementation 'androidx.tvprovider:tvprovider:1.0.0'
+}
